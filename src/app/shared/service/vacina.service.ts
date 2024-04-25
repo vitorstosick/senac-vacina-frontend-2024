@@ -11,13 +11,13 @@ import { VacinaSeletor } from '../model/seletor/vacina.seletor';
 
 export class VacinasService {
 
-  //http://localhost:8080/vacina-o_senac.2024
-  private readonly API = 'http://localhost:8080/vacina-o_senac.2024/rest/vacina';
+  //http://localhost:8080/senac-vacinacao-20241-vitor-stosick
+  private readonly API = 'http://localhost:8080/senac-vacinacao-20241-vitor-stosick/rest/vacina';
 
   constructor(private httpClient: HttpClient) { }
 
   public listarTodas(): Observable <Array<Vacinas>> {
-    return this.httpClient.get<Array<Vacinas>>(this.API + "/listarTodos");
+    return this.httpClient.get<Array<Vacinas>>(this.API + "/todas");
 
   }
 

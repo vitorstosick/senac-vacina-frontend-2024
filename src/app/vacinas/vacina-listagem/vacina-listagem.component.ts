@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Vacinas } from '../../shared/model/vacina';
-import { VacinasService } from '../../shared/service/vacinas.service';
-import { VacinaSeletor } from '../../shared/model/seletor/vacina.seleto';
+import { VacinasService } from '../../shared/service/vacina.service';
+import { VacinaSeletor } from '../../shared/model/seletor/vacina.seletor';
 import { PaisService } from '../../shared/service/pais.service';
 import { Pais } from '../../shared/model/pais';
 import { Pessoa } from '../../shared/model/pessoa';
@@ -10,7 +10,7 @@ import { PesquisadorService } from '../../shared/service/pesquisador.service';
 @Component({
   selector: 'app-vacina-listagem',
   templateUrl: './vacina-listagem.component.html',
-  styleUrl: './vacina-listagem.component.css',
+  styleUrl: './vacina-listagem.component.scss',
 })
 export class VacinaListagemComponent implements OnInit {
   public vacinas: Array<Vacinas> = new Array();
@@ -27,7 +27,7 @@ export class VacinaListagemComponent implements OnInit {
   ngOnInit(): void {
     this.consultarTodasVacinas();
 
-    this.paisService.consultarTodosPaises().subscribe(
+    this.paisService.consultarTodos().subscribe(
       (resultado) => {
         this.paises = resultado;
       },
@@ -47,7 +47,7 @@ export class VacinaListagemComponent implements OnInit {
   }
 
   private consultarTodasVacinas() {
-    this.VacinasService.listarTodas().subscribe(
+    this.VacinaService.listarTodas().subscribe(
       (resultado) => {
         this.vacinas = resultado;
       },
@@ -58,7 +58,7 @@ export class VacinaListagemComponent implements OnInit {
   }
 
   public pesquisar() {
-    this.VacinasService.consultarComSeletor(this.seletor).subscribe(
+    this.VacinaService.consultarComSeletor(this.seletor).subscribe(
       (resultado) => {
         this.vacinas = resultado;
       },
@@ -73,7 +73,7 @@ export class VacinaListagemComponent implements OnInit {
   }
 
   public excluir(id: number) {
-    this.VacinasService.excluir(id).subscribe(
+    this.VacinaService.excluir(id).subscribe(
 
     );
   }

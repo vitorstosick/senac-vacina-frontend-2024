@@ -9,7 +9,7 @@ import { Pessoa } from '../model/pessoa';
 export class PesquisadorService {
 
 
-  private readonly API = 'http://localhost:8080/vacina-o_senac.2024/rest/pessoa';
+  private readonly API = 'http://localhost:8080/senac-vacinacao-20241-vitor-stosick/rest/pessoa';
 
   constructor(private httpCliente: HttpClient) { }
 
