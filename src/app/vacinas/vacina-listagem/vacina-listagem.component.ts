@@ -6,6 +6,8 @@ import { PaisService } from '../../shared/service/pais.service';
 import { Pais } from '../../shared/model/pais';
 import { Pessoa } from '../../shared/model/pessoa';
 import { PesquisadorService } from '../../shared/service/pesquisador.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vacina-listagem',
@@ -21,27 +23,28 @@ export class VacinaListagemComponent implements OnInit {
   constructor(
     private VacinaService: VacinasService,
     private paisService: PaisService,
-    private pesquisadorService: PesquisadorService
-  ) {}
+    private pesquisadorService: PesquisadorService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.consultarTodasVacinas();
+
 
     this.paisService.consultarTodos().subscribe(
       (resultado) => {
         this.paises = resultado;
       },
       (erro) => {
-        console.error('erro ao consultar todas paises', erro);
+        console.error('erro ao consultar vacina por país', erro);
       }
     );
 
-    this.pesquisadorService.consultarTodosPesquisador().subscribe(
+    this.pesquisadorService.consultarPorPesquisador().subscribe(
       (resultado) => {
         this.pesquisadores = resultado;
       },
       (erro) => {
-        console.error('erro ao consultar todas pesquisadores', erro);
+        console.error('erro ao consultar vacinas por pesquisadores', erro);
       }
     );
   }
@@ -72,9 +75,30 @@ export class VacinaListagemComponent implements OnInit {
     this.seletor = new VacinaSeletor();
   }
 
-  public excluir(id: number) {
-    this.VacinaService.excluir(id).subscribe(
+  public atualizar(idVacinaSelecionada: number) {
+    this.router.navigate(['/vacinas/detalhes/', idVacinaSelecionada]);
+  }
 
-    );
+  public excluir(vacinaSelecionada: Vacinas) {
+    Swal.fire({
+      title: 'Deseja excluir vacina?',
+      text: 'Essa ação não poderá ser desfeita',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.VacinaService.excluir(vacinaSelecionada.id).subscribe(
+          (resultado) => {
+            this.pesquisar();
+          },
+          (erro) => {
+            Swal.fire('Erro!', 'Erro ao excluir vacina: ' + erro.error.mensagem, 'error');
+          }
+
+        );
+      }
+    });
   }
 }

@@ -17,7 +17,7 @@ export class VacinasService {
   constructor(private httpClient: HttpClient) { }
 
   public listarTodas(): Observable <Array<Vacinas>> {
-    return this.httpClient.get<Array<Vacinas>>(this.API + "/todas");
+    return this.httpClient.get<Array<Vacinas>>(this.API + '/todas');
 
   }
 
@@ -27,12 +27,19 @@ export class VacinasService {
   }
 
   public consultarComSeletor(seletor: VacinaSeletor): Observable <Array<Vacinas>> {
-    return this.httpClient.post<Array<Vacinas>>(this.API + "/filtro", seletor)
+    return this.httpClient.post<Array<Vacinas>>(this.API + '/filtro', seletor)
   }
 
   public excluir(id: number):Observable<boolean> {
-    return this.httpClient.delete<boolean>(this.API + "/" + id);
+    return this.httpClient.delete<boolean>(this.API + "/excluir/" + id);
   }
 
+  public salvar(vacina: Vacinas): Observable<any> {
+    return this.httpClient.post<Vacinas>(this.API + '/inserir', vacina)
+  }
+
+  public atualizar(vacina: Vacinas):Observable<any> {
+    return this.httpClient.put(this.API + '/atualizar', vacina)
+  }
 
 }

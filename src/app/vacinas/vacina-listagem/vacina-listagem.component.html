@@ -12,7 +12,7 @@
               type="text"
               id="nome"
               class="form-control"
-              name="nomeVacina"
+              name="nome"
               [(ngModel)]="seletor.nomeVacina"
             />
           </div>
@@ -21,12 +21,11 @@
             <!--<input type="text" id="nome" class="form-control" name="nomePais" [(ngModel)]="seletor.nomePais"> -->
             <select
               class="form-control"
-              name="nomePais"
+              name="nome"
               [(ngModel)]="seletor.nomePais"
             >
-              @for (pais of paises; track pais.idPais) {
-              <option ngValue="{{ pais.nomePais }}">
-                {{ pais.nomePais }} ({{ pais.sigla }})</option>
+              @for (pais of paises; track pais.id) {
+              <option ngValue="{{ pais.nome }}">{{ pais.nome }} ({{ pais.sigla }})</option>
               }
             </select>
           </div>
@@ -39,7 +38,7 @@
               [(ngModel)]="seletor.nomePesquisador"
             >
               @for (pessoa of pesquisadores; track pessoa.id) {
-              <option value="{{ pessoa.nome }}">{{ pessoa.nome }}</option>
+              <option ngValue="{{ pessoa.nome }}">{{ pessoa.nome }}</option>
               }
             </select>
           </div>
@@ -90,15 +89,15 @@
       <tbody>
         <tr *ngFor="let vacina of vacinas">
           <td>{{ vacina.nome }}</td>
-          <td>{{ vacina.paisOrigem.nomePais }}</td>
-          <td>{{ vacina.pesquisador.nome }}</td>
+          <td>{{ vacina.paisOrigem.nome }}</td>
+          <td>{{ vacina.pesquisadorResponsavel.nome }}</td>
           <td>{{ vacina.estagio }}</td>
           <td>{{ vacina.dataInicioPesquisa| date : "dd/MM/yyyy" }}</td>
           <!-- <td> {{ vacina.mediaVacina }} </td> -->
           <td>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-primary" >Editar</button>
-              <button class="btn btn-danger " (click)="excluir(vacina.id)">Excluir</button>
+              <button class="btn btn-primary" (click)="atualizar(vacina.id)"  >Editar</button>
+              <button class="btn btn-danger " (click)="excluir(vacina)">Excluir</button>
             </div>
           </td>
         </tr>

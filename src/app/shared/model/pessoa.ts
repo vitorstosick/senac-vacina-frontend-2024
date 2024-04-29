@@ -7,7 +7,7 @@ export interface Pessoa {
   dataNascimento: Date,
   sexo: string,
   cpf: string,
-  tipoPessoaCadastrada: number,
+  tipo: number,
   paisOrigem: Pais
 
 }

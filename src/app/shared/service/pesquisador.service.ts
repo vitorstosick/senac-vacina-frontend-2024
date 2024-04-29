@@ -11,10 +11,31 @@ export class PesquisadorService {
 
   private readonly API = 'http://localhost:8080/senac-vacinacao-20241-vitor-stosick/rest/pessoa';
 
-  constructor(private httpCliente: HttpClient) { }
+constructor(private httpCliente: HttpClient) { }
 
-  public consultarTodosPesquisador():Observable<Array<Pessoa>> {
-    return this.httpCliente.get<Array<Pessoa>>(this.API + "/listar")
+  public consultarTodasPessoas():Observable<Array<Pessoa>> {
+    return this.httpCliente.get<Array<Pessoa>>(this.API + '/todas')
+  };
+
+  public consultarPorPesquisador():Observable<Array<Pessoa>> {
+    return this.httpCliente.get<Array<Pessoa>>(this.API + '/pesquisadores')
+  };
+
+  public consultarPessoaPorId(id: number):Observable<Pessoa> {
+    return this.httpCliente.get<Pessoa>(this.API + '/' + id);
+  }
+
+  public inserir(pessoa: Pessoa):Observable<any> {
+    return this.httpCliente.post<Pessoa>(this.API + '/inserir', pessoa)
+  }
+
+  public atualizar(pessoa: Pessoa):Observable<any> {
+    return this.httpCliente.put(this.API + '/atualizar', pessoa);
+
+  }
+
+  public excluir(id: number):Observable<boolean> {
+    return this.httpCliente.delete<boolean>(this.API + '/excluir/' + id)
   }
 
 }
