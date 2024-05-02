@@ -24,7 +24,7 @@ export class VacinaListagemComponent implements OnInit {
     private VacinaService: VacinasService,
     private paisService: PaisService,
     private pesquisadorService: PesquisadorService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -92,11 +92,16 @@ export class VacinaListagemComponent implements OnInit {
         this.VacinaService.excluir(vacinaSelecionada.id).subscribe(
           (resultado) => {
             this.pesquisar();
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Vacina excluída com sucesso!",
+              showConfirmButton: false,
+            });
           },
           (erro) => {
             Swal.fire('Erro!', 'Erro ao excluir vacina: ' + erro.error.mensagem, 'error');
           }
-
         );
       }
     });
