@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header bg-primary">
+      <h5>Filtros</h5>
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label for="text">Nome da pessoa:</label>
+            <input type="text" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label for="text">CPF:</label>
+            <input type="text" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label for="text">País de origem:</label>
+            <select
+              class="form-control"
+              name="nome"
+              [(ngModel)]="seletor.nomePais"
+            >
+              @for (pais of paises; track pais.id) {
+              <option ngValue="{{ pais.nome }}">{{ pais.nome }} ({{ pais.sigla }})</option>
+              }
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label for="date">Data nascimento:</label>
+            <input  type="date" class="form-control" required >
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col-md-16 form-group">
+            <label for="btnPesquisar" class="form-label">&nbsp;</label>
+            <button
+              type="submit"
+              class="btn btn-success "
+              name="btnPesquisar"
+              (click)="pesquisar()"
+            >
+              Pesquisar
+            </button>
+            <label for="btnLimpar" class="form-label">&nbsp;</label>
+            <button type="submit" class="btn btn-warning" (click)="limpar()">
+              Limpar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div>
+    <table class="table table-striped border">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Sexo</th>
+          <th>CPF</th>
+          <th>tipo de Cadastrada</th>
+          <th>Data Nascimento</th>
+          <th>País origem:</th>
+          <!-- <th >Média</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of pessoas">
+          <td>{{ p.nome }}</td>
+          <td>{{ p.sexo }}</td>
+          <td>{{ p.cpf }}</td>
+          <td>{{ p.tipo }}</td>
+          <td>{{ p.dataNascimento | date : "dd/MM/yyyy" }}</td>
+          <td>{{ p.paisOrigem.nome }} </td>
+          <!-- <td> {{ vacina.mediaVacina }} </td> -->
+          <td>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-primary">Editar</button>
+              <button class="btn btn-danger ">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
