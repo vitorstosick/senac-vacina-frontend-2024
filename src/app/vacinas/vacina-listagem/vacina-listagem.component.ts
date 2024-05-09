@@ -101,4 +101,10 @@ export class VacinaListagemComponent implements OnInit {
       }
     });
   }
+
+  posterior() {
+  }
+anterior() {
+  }
+
 }

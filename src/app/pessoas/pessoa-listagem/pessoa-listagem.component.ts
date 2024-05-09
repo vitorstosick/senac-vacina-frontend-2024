@@ -66,4 +66,10 @@ export class PessoaListagemComponent implements OnInit{
       throw new Error('Method not implemented.');
       }
 
+    posterior() {
+      }
+
+    anterior() {
+      }
+
 }
