@@ -5,7 +5,7 @@ import { VacinaSeletor } from '../../shared/model/seletor/vacina.seletor';
 import { PaisService } from '../../shared/service/pais.service';
 import { Pais } from '../../shared/model/pais';
 import { Pessoa } from '../../shared/model/pessoa';
-import { PesquisadorService } from '../../shared/service/pesquisador.service';
+import { PessoaService } from '../../shared/service/pessoa.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
@@ -16,20 +16,21 @@ import { Router } from '@angular/router';
 })
 export class VacinaListagemComponent implements OnInit {
   public vacinas: Array<Vacinas> = new Array();
+  public vacina: number;
   public seletor: VacinaSeletor = new VacinaSeletor();
   public paises: Array<Pais> = new Array();
   public pesquisadores: Array<Pessoa> = new Array();
+  public totalPaginas: Number = 0;
+  public readonly TAMANHO_PAGINA: number = 3;
 
   constructor(
-    private VacinaService: VacinasService,
+    private vacinaService: VacinasService,
     private paisService: PaisService,
-    private pesquisadorService: PesquisadorService,
-    private router: Router,
-  ) { }
+    private pessoaService: PessoaService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-
-
     this.paisService.consultarTodos().subscribe(
       (resultado) => {
         this.paises = resultado;
@@ -39,7 +40,7 @@ export class VacinaListagemComponent implements OnInit {
       }
     );
 
-    this.pesquisadorService.consultarPorPesquisador().subscribe(
+    this.pessoaService.consultarPorPesquisador().subscribe(
       (resultado) => {
         this.pesquisadores = resultado;
       },
@@ -50,7 +51,7 @@ export class VacinaListagemComponent implements OnInit {
   }
 
   private consultarTodasVacinas() {
-    this.VacinaService.listarTodas().subscribe(
+    this.vacinaService.listarTodas().subscribe(
       (resultado) => {
         this.vacinas = resultado;
       },
@@ -61,7 +62,7 @@ export class VacinaListagemComponent implements OnInit {
   }
 
   public pesquisar() {
-    this.VacinaService.consultarComSeletor(this.seletor).subscribe(
+    this.vacinaService.consultarComSeletor(this.seletor).subscribe(
       (resultado) => {
         this.vacinas = resultado;
       },
@@ -86,25 +87,59 @@ export class VacinaListagemComponent implements OnInit {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sim!',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.value) {
-        this.VacinaService.excluir(vacinaSelecionada.id).subscribe(
+        this.vacinaService.excluir(vacinaSelecionada.id).subscribe(
           (resultado) => {
             this.pesquisar();
             Swal.fire('Sucesso!', 'Vacina Excluida com sucesso! ', 'success');
           },
           (erro) => {
-            Swal.fire('Erro!', 'Erro ao excluir vacina: ' + erro.error.mensagem, 'error');
+            Swal.fire(
+              'Erro!',
+              'Erro ao excluir vacina: ' + erro.error.mensagem,
+              'error'
+            );
           }
         );
       }
     });
   }
 
-  posterior() {
+  public contarPaginas(){
+    this.vacinaService.contarPaginas(this.seletor).subscribe(
+      resultado => {
+        this.totalPaginas = resultado
+      },
+      erro => {
+        Swal.fire('Erro ao consultar total de páginas', erro.error.mensagem, 'error');
+      }
+    )
   }
-anterior() {
+
+  atualizarPaginacao() {
+    this.contarPaginas();
+    this.pesquisar();
+  }
+
+  avancarPagina(){
+    this.seletor.pagina++;
+    this.pesquisar();
+  }
+
+  voltarPagina() {
+    this.seletor.pagina--;
+    this.pesquisar();
+  }
+
+  irParaPagina(indicePagina: number) {
+    this.seletor.pagina = indicePagina;
+    this.pesquisar();
+  }
+
+  criarArrayPaginas(): any[] {
+    return Array(this.totalPaginas).fill(0).map((x, i)=> i +1);
   }
 
 }

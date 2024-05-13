@@ -1,8 +1,9 @@
-export class VacinaSeletor {
+import { BaseSeletor } from './base.seletor';
 
+export class VacinaSeletor extends BaseSeletor{
   nomePais: string;
   nomePesquisador: string;
-  nomeVacina: string;
-  dataInicioPesquisa : Date;
+  nome: string;
+  dataInicioPesquisa: Date;
   dataFinalPesquisa: Date;
 }

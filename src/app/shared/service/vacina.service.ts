@@ -42,4 +42,12 @@ export class VacinasService {
     return this.httpClient.put(this.API + '/atualizar', vacina)
   }
 
+  public contarTotalRegistro(seletor:VacinaSeletor):Observable<number>{
+    return this.httpClient.post<number>(this.API + '/contar',seletor);
+  }
+
+  public contarPaginas(seletor: VacinaSeletor):Observable<number> {
+    return this.httpClient.post<number>(this.API + '/total-pagina', seletor);
+  }
+
 }

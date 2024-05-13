@@ -1,45 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { VacinasService } from '../../shared/service/vacina.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Vacinas } from '../../shared/model/vacina';
-import { Pessoa } from '../../shared/model/pessoa';
 import { Pais } from '../../shared/model/pais';
+import { Pessoa } from '../../shared/model/pessoa';
 import { PessoaService } from '../../shared/service/pessoa.service';
 import { PaisService } from '../../shared/service/pais.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-vacina-detalhe',
+  selector: 'app-pessoa-detalhe',
   //standalone: true,
-  //imports: [VacinasModule],
-  templateUrl: './vacina-detalhe.component.html',
-  styleUrl: './vacina-detalhe.component.scss',
+  //imports: [],
+  templateUrl: './pessoa-detalhe.component.html',
+  styleUrl: './pessoa-detalhe.component.scss',
 })
-export class VacinaDetalheComponent implements OnInit {
+export class PessoaDetalheComponent implements OnInit {
   public pais: Array<Pais> = new Array();
-  public pesquisadores: Array<Pessoa> = new Array();
-  public vacina: Vacinas = new Vacinas();
-  public idVacina: number;
+  public pessoas: Array<Pessoa> = new Array();
+  public pessoa: Pessoa = new Pessoa();
+  public idPessoa: number;
 
   constructor(
-    private vacinaService: VacinasService,
-    private router: Router, // COMPONENTE PARA FAZER ROTEAMENTO ENTRA AS TELAS
+    private router: Router,
     private pessoaService: PessoaService,
     private paisService: PaisService,
-    private route: ActivatedRoute //PEGAR OS PARAMETROS DA URL
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.idVacina = params['id'];
-      if (this.idVacina) {
-        this.buscarVacina();
+      this.idPessoa = params['id'];
+      if (this.idPessoa) {
+        this.buscarPessoa();
       }
     });
 
     this.pessoaService.consultarPorPesquisador().subscribe(
       (resposta) => {
-        this.pesquisadores = resposta;
+        this.pessoas = resposta;
       },
       (erro) => {
         Swal.fire('Erro ao ao consultar por pesquisador!', erro, 'error');
@@ -57,7 +54,7 @@ export class VacinaDetalheComponent implements OnInit {
   }
 
   public salvar(): void {
-    if (this.idVacina) {
+    if (this.idPessoa) {
       this.atualizar();
     } else {
       this.inserir();
@@ -65,37 +62,37 @@ export class VacinaDetalheComponent implements OnInit {
   }
 
   public inserir(): void {
-    this.vacinaService.salvar(this.vacina).subscribe(
+    this.pessoaService.inserir(this.pessoa).subscribe(
       (resposta) => {
-        this.vacina = resposta;
-        Swal.fire('Vacina salva com sucesso!', '', 'success');
+        this.pessoa = resposta;
+        Swal.fire('Pessoa cadastrada com sucesso!', '', 'success');
         this.voltar();
       },
       (erro) => {
-        Swal.fire('Erro ao salvar uma vacina!', erro, 'error');
+        Swal.fire('Erro ao cadastrar uma pessoa!', erro.error.mensagem, 'error');
       }
     );
   }
 
   public atualizar(): void {
-    this.vacinaService.atualizar(this.vacina).subscribe(
+    this.pessoaService.atualizar(this.pessoa).subscribe(
       (resposta) => {
-        Swal.fire('Vacina atualizada com sucesso!', '', 'success');
+        Swal.fire('Pessoa atualizada com sucesso!', '', 'success');
         this.voltar();
       },
       (erro) => {
         Swal.fire(
-          'Erro ao atualizar a vacina: ' + erro.error.mensagem,
+          'Erro ao atualizar a pessoa: ' + erro.error.mensagem,
           'error'
         );
       }
     );
   }
 
-  public buscarVacina(): void {
-    this.vacinaService.consultarPorId(this.idVacina).subscribe(
+  public buscarPessoa(): void {
+    this.pessoaService.consultarPessoaPorId(this.idPessoa).subscribe(
       (vacina) => {
-        this.vacina = vacina;
+        this.pessoa = vacina;
       },
       (erro) => {
         Swal.fire('Erro ao buscar uma vacina!', erro, 'error');
@@ -104,6 +101,10 @@ export class VacinaDetalheComponent implements OnInit {
   }
 
   public voltar() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/pessoas']);
+  }
+
+  public compareById(r1: any, r2: any): boolean {
+    return r1 && r2 ? r1.id === r2.id : r1 === r2;
   }
 }

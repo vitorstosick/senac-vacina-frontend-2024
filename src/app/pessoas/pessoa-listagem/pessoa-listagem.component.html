@@ -1,6 +1,6 @@
 <div class="container">
   <div class="card">
-    <div class="card-header bg-primary">
+    <div class="card-header bg-z">
       <h5>Filtros</h5>
     </div>
     <div class="card-body">
@@ -8,27 +8,28 @@
         <div class="row g-3">
           <div class="col-md-4">
             <label for="text">Nome da pessoa:</label>
-            <input type="text" class="form-control" required>
+            <input type="text" class="form-control text-center text-dark" name="nomePessoa" [(ngModel)]="seletor.nomePessoa">
           </div>
           <div class="col-md-4">
             <label for="text">CPF:</label>
-            <input type="text" class="form-control" required>
+            <input type="text" class="form-control text-center" name="cpf" [(ngModel)]="seletor.cpf" required>
           </div>
           <div class="col-md-4">
             <label for="text">País de origem:</label>
             <select
-              class="form-control"
-              name="nome"
-              [(ngModel)]="seletor.nomePais"
-            >
-              @for (pais of paises; track pais.id) {
-              <option ngValue="{{ pais.nome }}">{{ pais.nome }} ({{ pais.sigla }})</option>
-              }
-            </select>
+            class="form-control text-center"
+            name="nomePais"
+            [(ngModel)]="seletor.nomePais"
+          >
+            @for (pais of paises; track pais.id) {
+            <option ngValue="{{ pais.nome }}">
+              {{ pais.nome }} ({{ pais.sigla }})</option>
+            }
+          </select>
           </div>
           <div class="col-md-2">
             <label for="date">Data nascimento:</label>
-            <input  type="date" class="form-control" required >
+            <input  type="date" class="form-control text-center"  name="dataNascimento"  [(ngModel)]="seletor.dataNascimento">
           </div>
         </div>
         <div class="row" >
@@ -36,14 +37,14 @@
             <label for="btnPesquisar" class="form-label">&nbsp;</label>
             <button
               type="submit"
-              class="btn btn-success "
+              class="btn btn-outline-secondary"
               name="btnPesquisar"
               (click)="pesquisar()"
             >
               Pesquisar
             </button>
             <label for="btnLimpar" class="form-label">&nbsp;</label>
-            <button type="submit" class="btn btn-warning" (click)="limpar()">
+            <button type="submit"  class="btn btn-outline-primary" (click)="limpar()">
               Limpar
             </button>
           </div>
@@ -75,21 +76,12 @@
           <!-- <td> {{ vacina.mediaVacina }} </td> -->
           <td>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-primary">Editar</button>
-              <button class="btn btn-danger ">Excluir</button>
+              <button  class="btn btn-outline-success" (click)="atualizar(p.id)" >Editar</button>
+              <button  class="btn btn-outline-danger" (click)="excluir(p)">Excluir</button>
             </div>
           </td>
         </tr>
       </tbody>
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#" (click)="anterior()">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#" (click)="posterior()">Next</a></li>
-        </ul>
-      </nav>
     </table>
   </div>
 </div>
